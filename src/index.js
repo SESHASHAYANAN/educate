@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./EducationPG1.css"; // Global styles - dark gradient background
+import Render from "./App"; // Update to import Render
+import Sidebar from "./EducationPG1";
+import EducationPlatform from "./EducationPG2";
+import PhysicsCardGame from "./SwipeEducation";
+import LearningPlatform from "./ConceptEducation";
+import PhysicsClassroom from "./ConstructiveEducation";
+import FHackathon from "./famoushack";
+import FHHackathon from "./foresthack";
+import JobListing from "./Japple";
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <StrictMode>
+    <Render />
+  </StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

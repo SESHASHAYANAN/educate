@@ -1,0 +1,505 @@
+/* Swipe Stack Container */
+.swipe-stack-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    min-height: 700px;
+    width: 100%;
+}
+
+.swipe-stack-progress {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.swipe-stack-progress span {
+    font-size: 16px;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #8b5cf6, #a855f7);
+    background-size: 200% 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Swipe Stack */
+.swipe-stack {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 600px;
+    perspective: 1500px;
+    margin: 0 auto;
+}
+
+/* Individual Swipe Card - USES INLINE THEME */
+.swipe-card {
+    position: absolute;
+    width: 100%;
+    max-width: 480px;
+    min-height: 550px;
+    /* background set via inline style */
+    border-radius: 28px;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 32px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    border: 2px solid;
+    /* borderColor set via inline style */
+    overflow: hidden;
+}
+
+.swipe-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #a855f7, #c084fc, #a855f7);
+    opacity: 0.9;
+}
+
+.swipe-card.dragging {
+    cursor: grabbing;
+    box-shadow:
+        0 40px 100px rgba(168, 85, 247, 0.4),
+        0 0 60px rgba(168, 85, 247, 0.3),
+        0 0 0 2px rgba(168, 85, 247, 0.6);
+    transform: scale(1.02);
+}
+
+.swipe-card.swiping-right {
+    border-color: rgba(0, 255, 136, 0.8);
+    box-shadow:
+        0 25px 80px rgba(0, 255, 136, 0.4),
+        0 0 60px rgba(0, 255, 136, 0.3),
+        inset 0 0 100px rgba(0, 255, 136, 0.05);
+}
+
+.swipe-card.swiping-left {
+    border-color: rgba(255, 71, 87, 0.8);
+    box-shadow:
+        0 25px 80px rgba(255, 71, 87, 0.4),
+        0 0 60px rgba(255, 71, 87, 0.3),
+        inset 0 0 100px rgba(255, 71, 87, 0.05);
+}
+
+/* Swipe Indicators - BIGGER AND MORE VISIBLE */
+.swipe-indicator {
+    position: absolute;
+    top: 50px;
+    padding: 18px 36px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 2px;
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    text-transform: uppercase;
+}
+
+.swipe-indicator.select {
+    right: 30px;
+    background: linear-gradient(135deg, #00ff88, #00c49a);
+    color: #0a0a0a;
+    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.5);
+    border: 3px solid #00ff88;
+}
+
+.swipe-indicator.reject {
+    left: 30px;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: white;
+    box-shadow: 0 8px 32px rgba(255, 71, 87, 0.5);
+    border: 3px solid #ff4757;
+}
+
+.swipe-indicator.visible {
+    opacity: 1;
+    transform: scale(1) rotate(-12deg);
+}
+
+/* Card Header - BIGGER */
+.swipe-card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.swipe-card-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.swipe-card-company-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.swipe-card-company {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff !important;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(233, 229, 229, 0.3);
+}
+
+.swipe-card-status {
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.swipe-card-status.online {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 196, 154, 0.3));
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.4);
+}
+
+.swipe-card-status.offline {
+    background: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    border: 1px solid rgba(156, 163, 175, 0.3);
+}
+
+/* Card Body - BIGGER TEXT */
+.swipe-card-body {
+    margin-bottom: 24px;
+}
+
+.swipe-card-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff !important;
+    margin: 0 0 12px 0;
+}
+
+.swipe-card-salary {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #00ff88, #00c49a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 10px 0;
+}
+
+.swipe-card-type {
+    font-size: 16px;
+    color: #64b5f6;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+}
+
+.swipe-card-apps {
+    font-size: 15px;
+    color: #a0a0a0;
+    margin: 0 0 6px 0;
+}
+
+.swipe-card-time {
+    font-size: 15px;
+    color: #ff6b81;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Requirements - BIGGER TAGS */
+.swipe-card-requirements {
+    margin-bottom: 20px;
+}
+
+.swipe-card-requirements h4 {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 14px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.swipe-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.swipe-card-tag {
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.15), rgba(100, 181, 246, 0.25));
+    color: #64b5f6;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(100, 181, 246, 0.3);
+    transition: all 0.3s ease;
+}
+
+.swipe-card-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+}
+
+/* Description */
+.swipe-card-description {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.swipe-card-description p {
+    font-size: 15px;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Action Buttons - BIGGER AND ANIMATED */
+.swipe-card-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.swipe-btn {
+    flex: 1;
+    padding: 18px 24px;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.swipe-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+}
+
+.swipe-btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.reject-btn {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.15), rgba(255, 71, 87, 0.25));
+    color: #ff6b81;
+    border: 2px solid rgba(255, 71, 87, 0.4);
+}
+
+.reject-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.25), rgba(255, 71, 87, 0.35));
+    box-shadow: 0 8px 30px rgba(255, 71, 87, 0.3);
+    border-color: rgba(255, 71, 87, 0.6);
+}
+
+.select-btn {
+    background: linear-gradient(135deg, #00ff88, #00c49a);
+    color: #0a0a0a;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+}
+
+.select-btn:hover {
+    box-shadow: 0 10px 40px rgba(0, 255, 136, 0.5);
+    background: linear-gradient(135deg, #00ffaa, #00d9a5);
+}
+
+/* Instructions */
+.swipe-instructions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 30px;
+    padding: 0 20px;
+}
+
+.swipe-instructions span {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.instruction-left {
+    color: #ff6b81;
+}
+
+.instruction-right {
+    color: #00ff88;
+}
+
+/* Empty State */
+.swipe-stack-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 30px;
+    text-align: center;
+    background: linear-gradient(160deg, #2d1b4e 0%, #1e1538 50%, #150f28 100%);
+    border-radius: 28px;
+    border: 2px solid rgba(168, 85, 247, 0.4);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.swipe-stack-empty .empty-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.swipe-stack-empty h3 {
+    font-size: 32px;
+    color: #ffffff;
+    margin: 0 0 16px 0;
+    font-weight: 800;
+}
+
+.swipe-stack-empty p {
+    font-size: 18px;
+    color: #a0a0a0;
+    margin: 6px 0;
+}
+
+/* Selection Animation */
+@keyframes selectPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 60px rgba(0, 255, 136, 0.6);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rejectShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px) rotate(-2deg);
+    }
+
+    75% {
+        transform: translateX(10px) rotate(2deg);
+    }
+}
+
+.swipe-card.selecting {
+    animation: selectPulse 0.4s ease-out;
+}
+
+.swipe-card.rejecting {
+    animation: rejectShake 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+    .swipe-card {
+        padding: 24px;
+        min-height: 480px;
+        border-radius: 24px;
+    }
+
+    .swipe-card-title {
+        font-size: 22px;
+    }
+
+    .swipe-card-salary {
+        font-size: 20px;
+    }
+
+    .swipe-card-company {
+        font-size: 24px;
+    }
+
+    .swipe-btn {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+
+    .swipe-card-logo {
+        width: 64px;
+        height: 64px;
+    }
+}

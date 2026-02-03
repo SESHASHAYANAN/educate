@@ -1,0 +1,229 @@
+import React, { useState } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import "./Tracker.css";
+
+const Tracker = () => {
+  const [approved, setApproved] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [status, setStatus] = useState("In Progress");
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 1,
+      text: "👋 Welcome to Code Review Assistant! I can help analyze and debug your code.",
+      sender: "ai",
+    },
+  ]);
+  const [chatInput, setChatInput] = useState("");
+  const [openToCommunity, setOpenToCommunity] = useState(false);
+  const [coins, setCoins] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sampleCode = `
+def greet(name):
+    if not name:
+        print("Hello, User!")
+    else:
+        print("Hello, " + name)
+
+greet("John")
+  `;
+
+  const handleApprove = () => {
+    setApproved(true);
+    setStatus("Approved");
+  };
+
+  const handleVerify = () => {
+    setVerified(true);
+  };
+
+  const handleOpenToCommunity = () => {
+    setOpenToCommunity(true);
+    setCoins(coins + 10);
+  };
+
+  const handleApproveContribution = () => {
+    setCoins(coins + 5);
+    setOpenToCommunity(true);
+    setShowPopup(false);
+  };
+
+  const handleCancelContribution = () => {
+    setShowPopup(false);
+  };
+
+  const handleChatSubmit = async (e) => {
+    e.preventDefault();
+    if (chatInput.trim()) {
+      const userMessage = {
+        id: chatMessages.length + 1,
+        text: chatInput,
+        sender: "user",
+      };
+      setChatMessages([...chatMessages, userMessage]);
+      setChatInput("");
+      setIsLoading(true);
+
+      try {
+        const genAI = new GoogleGenerativeAI(
+          "AIzaSyAEXITDDzX4yOoHl4tOuFEaxkqtniph1NY"
+        );
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        // Create context with code and status
+        const context = `
+          Current Code Being Reviewed:
+          ${sampleCode}
+          
+          Code Status: ${status}
+          Approval Status: ${approved ? "Approved" : "Pending Approval"}
+          Verification Status: ${verified ? "Verified" : "Not Verified"}
+          
+          Please analyze the code and provide insights based on the following criteria:
+          1. Code correctness
+          2. Error handling
+          3. Best practices
+          4. Potential improvements
+          
+          User's question: ${chatInput}
+        `;
+
+        const result = await model.generateContent(context);
+        const response = await result.response;
+        const text = response.text();
+
+        const aiMessage = {
+          id: chatMessages.length + 2,
+          text: text,
+          sender: "ai",
+        };
+        setChatMessages((prev) => [...prev, aiMessage]);
+      } catch (error) {
+        console.error("Error generating response:", error);
+        const errorMessage = {
+          id: chatMessages.length + 2,
+          text: "Sorry, I couldn't process your message. Please try again.",
+          sender: "ai",
+        };
+        setChatMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  return (
+    <div className="tracker">
+      <div className="header">
+        <h1>Code Review Tracker</h1>
+      </div>
+
+      <div className="user-details">
+        <h2>User Information</h2>
+        <p>
+          <strong>User Name:</strong> John Doe
+        </p>
+        <p>
+          <strong>Position:</strong> Software Engineer
+        </p>
+        <p>
+          <strong>Project Name:</strong> Project Alpha
+        </p>
+        <p>
+          <strong>Status:</strong> {status}
+        </p>
+      </div>
+
+      <div className="code-review">
+        <h3>Sample Python Code:</h3>
+        <pre className="code-block">
+          <code>{sampleCode}</code>
+        </pre>
+
+        <div className="actions">
+          <button
+            className={`approve-button ${approved ? "approved" : ""}`}
+            onClick={handleApprove}
+          >
+            {approved ? "Approved, Ready to Deploy" : "Approve"}
+          </button>
+
+          <div className="verification">
+            <span className="tick">
+              {verified ? "✔️ Verified" : "❓ Not Verified"}
+            </span>
+            <button className="verify-button" onClick={handleVerify}>
+              Verify
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="chat-section">
+        <h2>💬 Code Analysis Chat</h2>
+        <div className="chat-messages">
+          {chatMessages.map((message) => (
+            <div key={message.id} className={`chat-message ${message.sender}`}>
+              {message.text}
+            </div>
+          ))}
+          {isLoading && (
+            <div className="chat-message ai">Analyzing code...</div>
+          )}
+        </div>
+        <form onSubmit={handleChatSubmit} className="chat-input">
+          <input
+            type="text"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            placeholder="Ask about the code..."
+            disabled={isLoading}
+          />
+          <button type="submit" disabled={isLoading || !chatInput.trim()}>
+            Send
+          </button>
+        </form>
+      </div>
+
+      <div className="open-community">
+        <button
+          className={openToCommunity ? "open-sourced" : ""}
+          onClick={handleOpenToCommunity}
+          disabled={openToCommunity}
+        >
+          {openToCommunity ? "Open Sourced" : "Open to Community"}
+          {coins > 0 && ` +${coins} coins 🪙`}
+        </button>
+      </div>
+
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <h3>Open Source Contribution</h3>
+            <p>
+              <strong>Username:</strong> John Doe
+            </p>
+            <p>
+              <strong>Role:</strong> Software Engineer
+            </p>
+            <p>
+              <strong>Code:</strong>
+              <pre>{sampleCode}</pre>
+            </p>
+            <p>
+              <strong>Documentation:</strong> Added a check for empty names,
+              providing a default greeting if no name is passed.
+            </p>
+            <div className="popup-actions">
+              <button onClick={handleApproveContribution}>Approve</button>
+              <button onClick={handleCancelContribution}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Tracker;
