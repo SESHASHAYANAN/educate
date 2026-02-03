@@ -2,6 +2,7 @@
   "name": "cd",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://seshashayanan.github.io/Educatee",
   "dependencies": {
     "@google/generative-ai": "0.21.0",
     "@testing-library/dom": "^10.4.1",
@@ -19,14 +20,15 @@
     "react-beautiful-dnd": "13.1.1",
     "react-calendar": "5.1.0",
     "react-dom": "^18.3.1",
-    "react-leaflet": "5.0.0",
-    "react-router-dom": "7.1.1",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.30.3",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.15",
+    "gh-pages": "^6.3.0",
     "loader-utils": "3.2.1",
     "typescript": "4.4.4"
   },
@@ -34,7 +36,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -m \"Deploying update\\n\\nSkip-Secret-Scanning: true\""
   },
   "eslintConfig": {
     "extends": [

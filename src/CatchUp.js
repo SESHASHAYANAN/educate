@@ -16,8 +16,8 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-const FOURSQUARE_API_KEY = "fsq3SCwDfGIYcJRjgSOVrmZrxc0Q/Kwd0myvQBTsCS3w4Fw=";
-const GEMINI_API_KEY = "AIzaSyAEXITDDzX4yOoHl4tOuFEaxkqtniph1NY";
+const FOURSQUARE_API_KEY = process.env.REACT_APP_FOURSQUARE_API_KEY;
+const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 const MOCK_FRIENDS = {
   Restaurant: [
@@ -228,9 +228,8 @@ async function fetchNearbyPlaces(lat, lon) {
     return data.results.map((place) => ({
       category: place.categories[0]?.name || "Place",
       name: place.name,
-      description: `${place.location.address || ""} ${
-        place.location.locality || ""
-      }`,
+      description: `${place.location.address || ""} ${place.location.locality || ""
+        }`,
       emoji: getCategoryEmoji(place.categories[0]?.name),
       coords: {
         lat: place.geocodes.main.latitude,
@@ -402,9 +401,8 @@ const CatchUp = () => {
         {recommendations.map((item, index) => (
           <div
             key={index}
-            className={`recommendation-card ${
-              selectedPlace === index ? "active" : ""
-            }`}
+            className={`recommendation-card ${selectedPlace === index ? "active" : ""
+              }`}
             onClick={() => handleCardClick(index)}
           >
             <div className="card-image">

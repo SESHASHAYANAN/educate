@@ -67,7 +67,7 @@ greet("John")
 
       try {
         const genAI = new GoogleGenerativeAI(
-          "AIzaSyAEXITDDzX4yOoHl4tOuFEaxkqtniph1NY"
+          process.env.REACT_APP_GEMINI_API_KEY
         );
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
