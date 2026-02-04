@@ -2,7 +2,7 @@
   "name": "cd",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://seshashayanan.github.io/Educatee",
+  "homepage": "https://seshashayanan.github.io/EDUCATEE",
   "dependencies": {
     "@google/generative-ai": "0.21.0",
     "@testing-library/dom": "^10.4.1",
