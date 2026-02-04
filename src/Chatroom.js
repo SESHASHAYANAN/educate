@@ -80,10 +80,6 @@ function TeamChat() {
     setUploadedFile(null);
   };
 
-  const handleCategoryFilter = (category) => {
-    setFilter(category);
-  };
-
   const handleFileUpload = (e) => {
     setUploadedFile(e.target.files[0]);
   };
@@ -115,9 +111,8 @@ function TeamChat() {
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`project-item ${
-              selectedProject === index ? "active" : ""
-            }`}
+            className={`project-item ${selectedProject === index ? "active" : ""
+              }`}
             onClick={() => setSelectedProject(index)}
           >
             <span>{project.name}</span> -{" "}

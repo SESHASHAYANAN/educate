@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import CatchUp from "./CatchUp";
 import "./orca.css";
 
 const SocialConnect = () => {
@@ -31,7 +22,7 @@ const SocialConnect = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createFormType, setCreateFormType] = useState("");
   const [joinedHotels, setJoinedHotels] = useState([]);
-  const [username, setUsername] = useState("You");
+  const [username,] = useState("You");
   const [formData, setFormData] = useState({
     name: "",
     image: "",
@@ -61,7 +52,7 @@ const SocialConnect = () => {
   const [showAIResponse, setShowAIResponse] = useState(false);
   const [aiResponseText, setAIResponseText] = useState("");
   const [aiLoading, setAILoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
+  const [currentUser,] = useState({
     name: "You",
     interests: ["Coding", "Gaming", "Music", "Travel", "Photography"],
     major: "Computer Science",

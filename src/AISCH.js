@@ -177,7 +177,7 @@ const TeamAlignmentSystem = () => {
     },
   ];
 
-  const [teams, setTeams] = useState(initialTeamData);
+  const [teams,] = useState(initialTeamData);
   const [tasks, setTasks] = useState([]);
   const [meetings, setMeetings] = useState(initialMeetings);
   const [chatMessages, setChatMessages] = useState([

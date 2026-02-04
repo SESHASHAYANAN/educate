@@ -44,7 +44,7 @@ const EducationPlatform = ({ onNavigate }) => {
   // Animation Storyline Mode States
   const [videoMode, setVideoMode] = useState("animation"); // "recap" | "animation" | "pro"
   const [animationScript, setAnimationScript] = useState(null);
-  const [characterDesigns, setCharacterDesigns] = useState([]);
+  const [characterDesigns,] = useState([]);
   const [currentScene, setCurrentScene] = useState(0);
   const [totalScenes, setTotalScenes] = useState(0);
   const [targetGrade, setTargetGrade] = useState("10");
@@ -155,7 +155,7 @@ const EducationPlatform = ({ onNavigate }) => {
     preview: { width: 854, height: 480, fps: 12, quality: 'fast', bitrate: 1500000 },
     final: { width: 1280, height: 720, fps: 24, quality: 'high', bitrate: 5000000 }
   };
-  const [renderMode, setRenderMode] = useState('preview');
+  const [renderMode,] = useState('preview');
 
   // ==================== Asset Cache System ====================
   const AssetCache = {
@@ -2958,7 +2958,6 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
       // Prepare speech synthesis
       const synth = window.speechSynthesis;
       const voices = synth.getVoices();
-      let currentDialogueIndex = 0;
 
       // Function to speak dialogue with character voice
       const speakDialogue = (dialogue, characterName) => {
@@ -3557,7 +3556,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
           dialogues: [
             {
               character: isTamil ? "க்வார்க்கி" : "Quarky", emotion: "EPIC",
-              text: isTamil ? "நான் தயார்! ${topic} இன் ரகசியங்களை கண்டுபிடிக்க!" : `I'm ready! To discover the secrets of ${topic}!`,
+              text: isTamil ? `நான் தயார்! ${topic} இன் ரகசியங்களை கண்டுபிடிக்க!` : `I'm ready! To discover the secrets of ${topic}!`,
               textEnglish: `I'm ready! To discover the secrets of ${topic}!`,
               voiceStyle: "heroic_declaration", soundFX: ["whoosh", "sparkle"]
             }
@@ -3631,7 +3630,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
           dialogues: [
             {
               character: isTamil ? "க்வார்க்கி" : "Quarky", emotion: "DETERMINED",
-              text: isTamil ? "நான் விரிவடைந்துவிட மாட்டேன்! ${topic} ஐ புரிந்து கொள்வேன்!" : `I won't give up! I will understand ${topic}!`,
+              text: isTamil ? `நான் விரிவடைந்துவிட மாட்டேன்! ${topic} ஐ புரிந்து கொள்வேன்!` : `I won't give up! I will understand ${topic}!`,
               textEnglish: `I won't give up! I will understand ${topic}!`
             }
           ],
@@ -3649,7 +3648,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
             },
             {
               character: isTamil ? "க்வார்க்கி" : "Quarky", emotion: "EPIPHANY",
-              text: isTamil ? "காத்திரு... இப்போது புரிகிறது! ${topic} என்பது...!" : `Wait... I understand now! ${topic} is about...!`,
+              text: isTamil ? `காத்திரு... இப்போது புரிகிறது! ${topic} என்பது...!` : `Wait... I understand now! ${topic} is about...!`,
               textEnglish: `Wait... I understand now! ${topic} is about...!`,
               soundFX: ["revelation", "orchestral_climax"]
             }
@@ -3668,7 +3667,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
             },
             {
               character: isTamil ? "க்வார்க்கி" : "Quarky", emotion: "PROUD",
-              text: isTamil ? "${topic} மிகவும் அழகானது! நன்றி எல்லோருக்கும்!" : `${topic} is so beautiful! Thank you everyone!`,
+              text: isTamil ? `${topic} மிகவும் அழகானது! நன்றி எல்லோருக்கும்!` : `${topic} is so beautiful! Thank you everyone!`,
               textEnglish: `${topic} is so beautiful! Thank you everyone!`
             }
           ],
@@ -4107,23 +4106,6 @@ Return ONLY valid JSON.`;
 
       // ============ HOLLYWOOD CINEMATIC DRAWING FUNCTIONS ============
 
-      // 🎨 Film Color Grading (Teal/Orange LUT)
-      const applyFilmLUT = (ctx, type = "teal_orange") => {
-        const luts = {
-          teal_orange: { shadows: [0, 128, 128], highlights: [255, 200, 150] },
-          noir: { shadows: [20, 20, 30], highlights: [200, 200, 200] },
-          blockbuster: { shadows: [30, 40, 60], highlights: [255, 230, 200] }
-        };
-        const lut = luts[type] || luts.teal_orange;
-        ctx.globalCompositeOperation = "overlay";
-        const lutGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        lutGradient.addColorStop(0, `rgba(${lut.highlights.join(",")}, 0.15)`);
-        lutGradient.addColorStop(1, `rgba(${lut.shadows.join(",")}, 0.2)`);
-        ctx.fillStyle = lutGradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = "source-over";
-      };
-
       // 🌟 Volumetric God Rays
       const drawGodRays = (ctx, frame, intensity = 0.4) => {
         const rayCount = 8;
@@ -4133,7 +4115,6 @@ Return ONLY valid JSON.`;
         for (let i = 0; i < rayCount; i++) {
           const angle = (i / rayCount) * Math.PI * 0.6 + Math.PI * 0.2;
           const length = canvas.height * 1.5;
-          const width = 80 + Math.sin(frame / 30 + i) * 30;
 
           const gradient = ctx.createLinearGradient(
             centerX, centerY,
@@ -4155,85 +4136,6 @@ Return ONLY valid JSON.`;
           ctx.fill();
           ctx.restore();
         }
-      };
-
-      // 🔆 Cinematic Lens Flare
-      const drawLensFlare = (ctx, frame, x, y, intensity = 0.5) => {
-        const flareColors = ["#FFD700", "#FF6B6B", "#87CEEB", "#FF69B4", "#00FF7F"];
-        const flareCount = 6;
-
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-
-        for (let i = 0; i < flareCount; i++) {
-          const fx = x + (canvas.width / 2 - x) * (i / flareCount) * 1.5;
-          const fy = y + (canvas.height / 2 - y) * (i / flareCount) * 1.5;
-          const size = (20 + i * 15) * (0.8 + Math.sin(frame / 20) * 0.2);
-
-          const gradient = ctx.createRadialGradient(fx, fy, 0, fx, fy, size);
-          gradient.addColorStop(0, `rgba(255, 255, 255, ${intensity})`);
-          gradient.addColorStop(0.3, flareColors[i % flareColors.length] + Math.floor(intensity * 180).toString(16).padStart(2, '0'));
-          gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(fx, fy, size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Anamorphic horizontal streak
-        const streakGradient = ctx.createLinearGradient(0, y, canvas.width, y);
-        streakGradient.addColorStop(0, "rgba(100, 180, 255, 0)");
-        streakGradient.addColorStop(0.4, `rgba(100, 180, 255, ${intensity * 0.3})`);
-        streakGradient.addColorStop(0.5, `rgba(255, 255, 255, ${intensity * 0.5})`);
-        streakGradient.addColorStop(0.6, `rgba(100, 180, 255, ${intensity * 0.3})`);
-        streakGradient.addColorStop(1, "rgba(100, 180, 255, 0)");
-        ctx.fillStyle = streakGradient;
-        ctx.fillRect(0, y - 3, canvas.width, 6);
-
-        ctx.restore();
-      };
-
-      // 🎬 Film Grain Overlay
-      const drawFilmGrain = (ctx, intensity = 0.08) => {
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-          const noise = (Math.random() - 0.5) * intensity * 255;
-          data[i] = Math.min(255, Math.max(0, data[i] + noise));
-          data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
-          data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-      };
-
-      // 🎥 Dolly Zoom Effect (Vertigo)
-      const applyDollyZoom = (ctx, frame, intensity = 1) => {
-        const zoom = 1 + Math.sin(frame / 60) * 0.08 * intensity;
-        const offsetX = (canvas.width - canvas.width * zoom) / 2;
-        const offsetY = (canvas.height - canvas.height * zoom) / 2;
-
-        ctx.save();
-        ctx.translate(offsetX, offsetY);
-        ctx.scale(zoom, zoom);
-      };
-
-      // 📷 Dutch Angle Tilt
-      const applyDutchAngle = (ctx, frame, maxTilt = 8) => {
-        const angle = Math.sin(frame / 45) * maxTilt * Math.PI / 180;
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(angle);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-      };
-
-      // 💥 Screen Shake (Impact Effect)
-      const applyScreenShake = (ctx, intensity = 5) => {
-        const shakeX = (Math.random() - 0.5) * intensity * 2;
-        const shakeY = (Math.random() - 0.5) * intensity * 2;
-        ctx.translate(shakeX, shakeY);
       };
 
       // 🎨 Hollywood Cinematic Background
@@ -5019,7 +4921,6 @@ Return ONLY valid JSON.`;
 
       // Since we use video-first pipeline, sync is guaranteed by construction
       // Each dialogue was scheduled to exact frame timing from finalTimings
-      const audioFramesCoverage = (syncMetrics.framesWithAudio / syncMetrics.totalFrames) * 100;
       syncMetrics.actualSyncAccuracy = 100; // Video-first = perfect sync by design
 
       await new Promise(resolve => setTimeout(resolve, 500)); // Brief validation delay
@@ -5059,286 +4960,7 @@ Return ONLY valid JSON.`;
       setVideoError(`Pro Mode failed: ${err.message}`);
       setVideoStatus("");
       setVideoLoading(false);
-      setVideoPhase("idle");
     }
-  };
-
-  // Fallback Pro script generator
-  const generateFallbackProScript = (topic, langData) => {
-    const mainCharName = topic.split(" ")[0].charAt(0).toUpperCase() + "arky";
-
-    return {
-      title: `${mainCharName}'s Epic ${topic} Adventure!`,
-      duration: "4-6 minutes",
-      language: langData.name,
-      mainCharacter: {
-        name: mainCharName,
-        type: topic,
-        personality: "Hyperactive, curious, easily panicked but brilliant",
-        catchphrase: `Let's make ${topic} LEGENDARY!`,
-        color: "#667eea",
-        voiceProfile: { pitch: 1.4, rate: 1.2, emotions: ["EXCITED", "PANIC", "SAD"] }
-      },
-      supportingCast: [
-        { name: "Professor Nucleus", type: "Teacher", role: "dad", color: "#607D8B", personality: "Grumpy but wise", voiceProfile: { pitch: 0.7, emotions: ["ANGRY", "PROUD"] } },
-        { name: "Stella Star", type: "Star Student", role: "mom", color: "#E91E63", personality: "Encouraging and nurturing", voiceProfile: { pitch: 1.2, emotions: ["WORRIED", "RELIEVED"] } },
-        { name: "Cool Carlos", type: "Laid-back friend", role: "friend", color: "#00BCD4", personality: "Surfer dude energy", voiceProfile: { pitch: 1.0, emotions: ["CHILL", "SURPRISED"] } },
-        { name: "Narrator", role: "narrator", color: "#795548", voiceProfile: { pitch: 1.0, emotions: ["CALM", "IMPORTANT"] } }
-      ],
-      scenes: generateExtendedScenes(topic, mainCharName, 40),
-      quizQuestions: [
-        { timestamp: "5:00", question: `What is the core principle of ${topic}?`, options: ["Option A", "Option B", "Option C", "Option D"], correct: "Option B", funnyExplanation: "Because science is awesome!" }
-      ]
-    };
-  };
-
-  const generateExtendedScenes = (topic, mainCharName, count) => {
-    const scenes = [];
-    // Extended acts for 4+ minute video with meaningful educational content
-    const actStructure = [
-      // Introduction (0:00-0:45) - 3 scenes
-      { act: "EPIC_OPENING", count: 3, avgDuration: 15 },
-      // Hook (0:45-1:30) - 3 scenes
-      { act: "HERO_INTRODUCTION", count: 3, avgDuration: 15 },
-      // Concept 1 (1:30-2:15) - 4 scenes (DEEP LEARNING)
-      { act: "deep_dive", count: 4, avgDuration: 12 },
-      // Conflict (2:15-2:45) - 3 scenes
-      { act: "VILLAIN_REVEAL", count: 3, avgDuration: 10 },
-      // Concept 2 (2:45-3:15) - 3 scenes (MORE LEARNING)
-      { act: "ACTION_CHASE", count: 3, avgDuration: 10 },
-      // Chaos/Challenge (3:15-3:45) - 4 scenes
-      { act: "chaos", count: 4, avgDuration: 8 },
-      // Resolution (3:45-4:15) - 4 scenes
-      { act: "RESOLUTION", count: 4, avgDuration: 8 },
-      // Quiz (4:15-4:45) - 4 scenes
-      { act: "INTERACTIVE_QUIZ", count: 4, avgDuration: 8 }
-    ];
-
-    // Generate topic-specific educational points
-    const educationalPoints = generateTopicEducationalPoints(topic);
-    let sceneId = 0;
-    let currentTime = 0;
-
-    actStructure.forEach(({ act, count: actCount, avgDuration }) => {
-      for (let i = 0; i < actCount; i++) {
-        sceneId++;
-        const minutes = Math.floor(currentTime / 60);
-        const seconds = Math.floor(currentTime % 60);
-
-        // Get contextually relevant dialogue for this scene
-        const dialogue = getContextualDialogue(topic, sceneId, act, educationalPoints, mainCharName);
-
-        scenes.push({
-          id: sceneId,
-          act: act,
-          timestamp: `${minutes}:${seconds.toString().padStart(2, '0')}`,
-          duration: avgDuration + (Math.random() * 4 - 2), // Slight variation
-          dialogues: dialogue,
-          action: `Scene ${sceneId}: ${act.replace(/_/g, ' ')} - Visual storytelling`,
-          educationalPoint: educationalPoints[sceneId % educationalPoints.length],
-          visualEffects: getActVisualEffects(act),
-          soundEffects: getActSoundEffects(act)
-        });
-
-        currentTime += avgDuration;
-      }
-    });
-
-    return scenes;
-  };
-
-  // Generate topic-specific educational points
-  const generateTopicEducationalPoints = (topic) => {
-    const topicLower = topic.toLowerCase();
-
-    // Physics topics
-    if (topicLower.includes('quantum') || topicLower.includes('physics')) {
-      return [
-        `${topic} deals with the behavior of subatomic particles`,
-        'Particles can exist in multiple states simultaneously (superposition)',
-        'Observation changes the state of quantum particles',
-        'Wave-particle duality: everything has wave and particle properties',
-        'Quantum entanglement connects particles across distances',
-        `Understanding ${topic} opens doors to new technologies`,
-        'Quantum computers use these principles for incredible computing power',
-        'The uncertainty principle limits what we can measure precisely'
-      ];
-    }
-
-    // Biology topics
-    if (topicLower.includes('biology') || topicLower.includes('cell') || topicLower.includes('dna')) {
-      return [
-        `${topic} is fundamental to understanding life`,
-        'Cells are the basic building blocks of all living things',
-        'DNA contains the genetic instructions for all organisms',
-        'Proteins are made following instructions in DNA',
-        'Cell division allows organisms to grow and repair',
-        `${topic} explains how traits are inherited`,
-        'Mutations can lead to both diseases and evolution',
-        'Understanding this helps develop medical treatments'
-      ];
-    }
-
-    // Chemistry topics
-    if (topicLower.includes('chemistry') || topicLower.includes('atom') || topicLower.includes('molecule')) {
-      return [
-        `${topic} explains how matter is structured`,
-        'Atoms combine to form molecules through chemical bonds',
-        'Electrons determine how atoms interact',
-        'Chemical reactions transform substances into new materials',
-        `${topic} is used to create medicines and materials`,
-        'The periodic table organizes elements by properties',
-        'Energy is released or absorbed in chemical reactions',
-        'Molecular structure determines properties and behavior'
-      ];
-    }
-
-    // Math topics
-    if (topicLower.includes('math') || topicLower.includes('algebra') || topicLower.includes('calculus')) {
-      return [
-        `${topic} provides tools to solve complex problems`,
-        'Variables represent unknown quantities we want to find',
-        'Equations express relationships between quantities',
-        `${topic} is the language of science and engineering`,
-        'Patterns and formulas help predict outcomes',
-        'Logical thinking is the foundation of mathematics',
-        `${topic} applications are everywhere in daily life`,
-        'Practice and understanding lead to mathematical fluency'
-      ];
-    }
-
-    // Default educational points
-    return [
-      `${topic} is a fascinating area of study`,
-      `Understanding ${topic} helps us understand the world`,
-      'Key concepts build upon each other logically',
-      `${topic} has practical applications in real life`,
-      'Scientists have studied this for generations',
-      `${topic} continues to evolve with new discoveries`,
-      'Critical thinking is essential in this field',
-      `Mastering ${topic} opens many career opportunities`
-    ];
-  };
-
-  // Get contextually relevant dialogue for each scene
-  const getContextualDialogue = (topic, sceneNum, act, educationalPoints, mainCharName) => {
-    const characters = [mainCharName, "Professor Nucleus", "Stella Star", "Cool Carlos", "Narrator"];
-    const emotions = {
-      EPIC_OPENING: ["EXCITED", "EPIC", "DETERMINED"],
-      HERO_INTRODUCTION: ["CURIOUS", "HAPPY", "EXCITED"],
-      deep_dive: ["FOCUSED", "SURPRISED", "ENLIGHTENED"],
-      VILLAIN_REVEAL: ["TERRIFIED", "THREATENING", "WORRIED"],
-      ACTION_CHASE: ["PANIC", "DETERMINED", "BRAVE"],
-      chaos: ["PANIC", "CONFUSED", "SURPRISED"],
-      RESOLUTION: ["PROUD", "HAPPY", "ENLIGHTENED"],
-      INTERACTIVE_QUIZ: ["EXCITED", "ENCOURAGING", "PROUD"]
-    };
-
-    const actEmotions = emotions[act] || emotions.HERO_INTRODUCTION;
-    const eduPoint = educationalPoints[sceneNum % educationalPoints.length];
-
-    // Generate dialogues based on act type
-    const dialogueTemplates = {
-      EPIC_OPENING: [
-        { char: "Narrator", text: `Welcome to an incredible journey through ${topic}!`, emotion: "EPIC" },
-        { char: mainCharName, text: `Today we explore the amazing world of ${topic}!`, emotion: "EXCITED" },
-        { char: "Narrator", text: `Prepare to have your mind blown by ${topic}!`, emotion: "EPIC" }
-      ],
-      HERO_INTRODUCTION: [
-        { char: mainCharName, text: `I've always wondered about ${topic}. Let's discover together!`, emotion: "CURIOUS" },
-        { char: "Professor Nucleus", text: `Ah, ${topic}! One of the most fascinating subjects to study.`, emotion: "PROUD" },
-        { char: mainCharName, text: `There's so much to learn! I'm ready for this adventure!`, emotion: "EXCITED" }
-      ],
-      deep_dive: [
-        { char: "Professor Nucleus", text: eduPoint, emotion: "ENLIGHTENED" },
-        { char: mainCharName, text: `Wow! ${eduPoint.split(' ').slice(0, 8).join(' ')}... that's incredible!`, emotion: "SURPRISED" },
-        { char: "Stella Star", text: `Let me explain this more clearly using an example.`, emotion: "HELPFUL" },
-        { char: "Cool Carlos", text: `Dude, this is actually making sense now!`, emotion: "EXCITED" }
-      ],
-      VILLAIN_REVEAL: [
-        { char: "Narrator", text: `But beware! There are challenges ahead in understanding ${topic}...`, emotion: "THREATENING" },
-        { char: mainCharName, text: `This is getting complicated! I'm not sure I understand.`, emotion: "WORRIED" },
-        { char: "Professor Nucleus", text: `Don't give up! Every scientist faces these obstacles.`, emotion: "ENCOURAGING" }
-      ],
-      ACTION_CHASE: [
-        { char: mainCharName, text: `Let's break down these complex concepts step by step!`, emotion: "DETERMINED" },
-        { char: "Stella Star", text: `You're doing great! Keep pushing forward!`, emotion: "ENCOURAGING" },
-        { char: "Cool Carlos", text: `We've got your back, let's tackle this together!`, emotion: "SUPPORTIVE" }
-      ],
-      chaos: [
-        { char: mainCharName, text: `Wait, I think I'm starting to see the pattern!`, emotion: "SURPRISED" },
-        { char: "Professor Nucleus", text: `Yes! You're on the right track now!`, emotion: "EXCITED" },
-        { char: mainCharName, text: `The pieces are finally coming together!`, emotion: "EPIPHANY" }
-      ],
-      RESOLUTION: [
-        { char: mainCharName, text: `I finally understand! ${eduPoint}`, emotion: "PROUD" },
-        { char: "Professor Nucleus", text: `You've done it! You've mastered the basics of ${topic}!`, emotion: "PROUD" },
-        { char: "Narrator", text: `And so, our hero conquered the mysteries of ${topic}!`, emotion: "EPIC" },
-        { char: mainCharName, text: `I can't wait to learn even more about ${topic}!`, emotion: "EXCITED" }
-      ],
-      INTERACTIVE_QUIZ: [
-        { char: "Narrator", text: `Now it's time to test your knowledge of ${topic}!`, emotion: "EXCITING" },
-        { char: mainCharName, text: `Let's see if you were paying attention! Here's a question!`, emotion: "PLAYFUL" },
-        { char: "Professor Nucleus", text: `Remember what we learned about the key concepts!`, emotion: "ENCOURAGING" },
-        { char: "Stella Star", text: `Take your time and think carefully!`, emotion: "HELPFUL" }
-      ]
-    };
-
-    const templates = dialogueTemplates[act] || dialogueTemplates.HERO_INTRODUCTION;
-    const template = templates[sceneNum % templates.length];
-
-    return [{
-      character: template.char,
-      emotion: template.emotion,
-      text: template.text,
-      textEnglish: template.text,
-      timing: 0
-    }];
-  };
-
-  // Visual effects per act type
-  const getActVisualEffects = (act) => {
-    const effects = {
-      EPIC_OPENING: ["particle_explosion", "lens_flare", "god_rays"],
-      HERO_INTRODUCTION: ["sparkle", "camera_pan", "soft_glow"],
-      deep_dive: ["focus_zoom", "diagram_overlay", "highlight_pulse"],
-      VILLAIN_REVEAL: ["shadow_reveal", "lightning", "screen_shake"],
-      ACTION_CHASE: ["speed_lines", "motion_blur", "dynamic_camera"],
-      chaos: ["screen_shake", "flash", "particle_burst"],
-      RESOLUTION: ["warm_glow", "celebration", "confetti"],
-      INTERACTIVE_QUIZ: ["spotlight", "timer_overlay", "answer_reveal"]
-    };
-    return effects[act] || ["soft_glow"];
-  };
-
-  // Sound effects per act type
-  const getActSoundEffects = (act) => {
-    const sounds = {
-      EPIC_OPENING: ["orchestral_swell", "bass_rumble", "choir"],
-      HERO_INTRODUCTION: ["upbeat_music", "whoosh", "sparkle"],
-      deep_dive: ["thinking_music", "aha_sound", "page_turn"],
-      VILLAIN_REVEAL: ["thunder", "dramatic_sting", "heartbeat"],
-      ACTION_CHASE: ["tension_music", "whoosh", "impact"],
-      chaos: ["chaos_music", "alarm", "dramatic_pause"],
-      RESOLUTION: ["triumph_fanfare", "celebration", "applause"],
-      INTERACTIVE_QUIZ: ["game_show_music", "timer_tick", "correct_answer"]
-    };
-    return sounds[act] || ["ambient"];
-  };
-
-  const getSceneDialogue = (topic, sceneNum, act) => {
-    // This function is now deprecated - getContextualDialogue is used instead
-    // Kept for backwards compatibility
-    const dialogues = {
-      hook: [`Welcome to the amazing world of ${topic}!`, `Ready for an adventure in ${topic}?`, `This is going to be EPIC!`],
-      act1: [`Let me tell you about ${topic}...`, `${topic} is fascinating because...`, `Watch closely as we explore!`],
-      deep_dive: [`Now here's where it gets interesting!`, `The secret of ${topic} is...`, `Can you believe this?!`],
-      chaos: [`OH NO! What's happening?!`, `Everything's going CRAZY!`, `Wait... I think I understand now!`],
-      resolution: [`So THAT'S how ${topic} works!`, `Amazing! It all makes sense!`, `You've mastered the basics!`],
-      quiz: [`QUIZ TIME! Let's test what you learned!`, `Think carefully before answering!`, `Pause and choose your answer!`]
-    };
-    const actDialogues = dialogues[act] || dialogues.act1;
-    return actDialogues[sceneNum % actDialogues.length];
   };
 
 
@@ -5601,70 +5223,6 @@ Return ONLY valid JSON.`;
       });
     };
     reader.readAsDataURL(file);
-  };
-
-  const analyzeNotesText = async (notesText) => {
-    if (!notesText.trim()) {
-      alert("Please enter the text content from your notes to analyze.");
-      return;
-    }
-
-    setNotesAnalyzing(true);
-    setNotesAnalysis(null);
-
-    try {
-      const analysisPrompt = `Analyze these physics notes for accuracy and clarity. Evaluate the content.
-
-Notes content:
-"${notesText}"
-
-Provide feedback in JSON format:
-{
-  "extractedText": "${notesText.substring(0, 100)}...",
-  "overallAccuracy": 85,
-  "corrections": [
-    {
-      "original": "incorrect statement from notes",
-      "corrected": "correct statement",
-      "explanation": "why this is wrong and what's right"
-    }
-  ],
-  "missingPoints": ["important concept that should be added"],
-  "strengths": ["what the notes do well"],
-  "suggestions": ["how to improve the notes"],
-  "score": 75
-}
-
-Return ONLY valid JSON, no markdown.`;
-
-      const response = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: GROQ_MODEL,
-          messages: [{ role: "user", content: analysisPrompt }],
-          temperature: 0.5,
-          max_tokens: 3000,
-        }),
-      });
-
-      const data = await response.json();
-      let jsonText = data.choices[0].message.content;
-      jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      const analysis = JSON.parse(jsonText);
-      setNotesAnalysis(analysis);
-    } catch (error) {
-      console.error("Error analyzing notes:", error);
-      setNotesAnalysis({
-        error: true,
-        message: "Failed to analyze notes. Please try again."
-      });
-    } finally {
-      setNotesAnalyzing(false);
-    }
   };
 
   // ==================== NEW FEATURE 4: ACCESSIBILITY OPTIONS ====================

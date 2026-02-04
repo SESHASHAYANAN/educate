@@ -4,30 +4,15 @@ import FHHackathon from "./foresthack";
 const HackathonPage = () => {
   const [pageHistory, setPageHistory] = useState(["hackathons"]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    const allData = [
-      "STUDIES",
-      "PROJECT",
-      "HACKATHON",
-      "JOB",
-      "LEARNING",
-      "DEVELOPMENT",
-      "COLLABORATION",
-      "MEETING",
-      "DESIGN",
-    ];
-    const results = allData.filter((item) =>
-      item.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setSearchResults(results);
   };
 
   const navigateTo = (page) => {
     setPageHistory((prev) => [...prev, page]);
   };
+
 
   const currentPage = pageHistory[pageHistory.length - 1];
 

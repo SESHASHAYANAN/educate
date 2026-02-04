@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileText, Send, Loader } from "lucide-react";
 import { SwipeCardStack } from "./SwipeCard";
-import CompanyDeepDive from "./CompanyDeepDive";
 import "./SwipeCard.css";
 import "./CompanyDeepDive.css";
 
@@ -41,8 +40,7 @@ const callGroqAPI = async (prompt, model = "llama3-70b-8192") => {
 const JobPortal = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("job");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedRole, setSelectedRole] = useState("all");
@@ -61,8 +59,7 @@ const JobPortal = () => {
   const [fileName, setFileName] = useState("");
   const [showTextArea, setShowTextArea] = useState(false);
   const [pastedContent, setPastedContent] = useState("");
-  const [showJobPopup, setShowJobPopup] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null);
+  const [, setSelectedJob] = useState(null);
   const [showRolePopup, setShowRolePopup] = useState(false);
   const [showReferralProfile, setShowReferralProfile] = useState(false);
   const [selectedReferral, setSelectedReferral] = useState(null);
@@ -71,26 +68,9 @@ const JobPortal = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-
-  // New state for EasyApply swipe flow
-  const [swipeMode, setSwipeMode] = useState(false);
-  const [showJobTypeModal, setShowJobTypeModal] = useState(false);
-  const [targetRole, setTargetRole] = useState("");
-  const [targetJobType, setTargetJobType] = useState("");
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [showCompanyDeepDive, setShowCompanyDeepDive] = useState(false);
-  const [generatedResume, setGeneratedResume] = useState(null);
-  const [isGeneratingResume, setIsGeneratingResume] = useState(false);
+  // State for jobs selected/rejected
   const [selectedJobs, setSelectedJobs] = useState([]);
   const [rejectedJobs, setRejectedJobs] = useState([]);
-  const [applicationFormData, setApplicationFormData] = useState({
-    fullName: "M.S.Seshashayanan",
-    email: "seshashayanan@example.com",
-    phone: "+1 (555) 123-4567",
-    yearsExperience: "5",
-    coverLetter: "",
-    linkedIn: "linkedin.com/in/seshashayanan"
-  });
   const [referralStatuses, setReferralStatuses] = useState({});
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [selectedProjectDetails, setSelectedProjectDetails] = useState(null);
@@ -672,22 +652,6 @@ const JobPortal = () => {
     }
   };
 
-  // Handler for Easy Apply - now shows job type selection first
-  const handleEasyApply = (job) => {
-    setSelectedJob(job);
-    setShowJobTypeModal(true);
-  };
-
-  // Start swipe mode after job type selection
-  const handleStartSwipeMode = () => {
-    if (!targetRole || !targetJobType) {
-      showToast("warning", "Please select both job type and target role");
-      return;
-    }
-    setShowJobTypeModal(false);
-    setSwipeMode(true);
-  };
-
   // Handle job selection from swipe - AUTO SUBMIT
   const handleJobSelect = async (job) => {
     setSelectedJob(job);
@@ -700,95 +664,6 @@ const JobPortal = () => {
   const handleJobReject = (job) => {
     setRejectedJobs(prev => [...prev, job]);
     showToast("info", `⏭️ Skipped ${job.title} at ${job.company}`);
-  };
-
-  // Generate ATS-optimized resume
-  const generateATSResume = async (job) => {
-    const prompt = `
-      Create an ATS-optimized resume tailored for this job:
-      
-      Job Title: ${job.title}
-      Company: ${job.company}
-      Requirements: ${job.requirements?.join(", ") || "N/A"}
-      Job Description: ${job.description || ""}
-      
-      User Profile:
-      Name: ${applicationFormData.fullName}
-      Experience: ${applicationFormData.yearsExperience} years
-      ${resumeContent ? `Current Resume: ${resumeContent.substring(0, 1500)}` : ""}
-      
-      Generate a professional, ATS-optimized resume that:
-      1. Includes relevant keywords from the job description
-      2. Highlights matching skills and experience
-      3. Uses a clean, parseable format
-      4. Quantifies achievements where possible
-      
-      Format the response as a structured resume with sections:
-      - Contact Information (name, email, phone)
-      - Professional Summary (2-3 sentences tailored to this role)
-      - Skills (matching job requirements)
-      - Experience (with quantified achievements)
-      - Education
-    `;
-
-    try {
-      const response = await callGroqAPI(prompt);
-      return response;
-    } catch (error) {
-      // Fallback resume if API fails
-      return `
-RESUME - ${applicationFormData.fullName}
-=====================================
-Email: ${applicationFormData.email}
-Phone: ${applicationFormData.phone}
-LinkedIn: ${applicationFormData.linkedIn}
-
-PROFESSIONAL SUMMARY
----------------------
-Experienced professional with ${applicationFormData.yearsExperience} years in the industry, 
-seeking ${job.title} position at ${job.company}. Strong background in 
-${job.requirements?.slice(0, 3).join(", ") || "relevant technologies"}.
-
-SKILLS
-------
-${job.requirements?.join(" | ") || "• Technical Skills • Problem Solving • Team Collaboration"}
-
-EXPERIENCE
------------
-[Your relevant experience tailored to ${job.title}]
-- Achieved measurable results in relevant projects
-- Collaborated with cross-functional teams
-- Implemented solutions using ${job.requirements?.[0] || "key technologies"}
-
-EDUCATION
----------
-Bachelor's Degree in Computer Science
-      `;
-    }
-  };
-
-  // Download resume as PDF/text file
-  const downloadResume = () => {
-    if (!generatedResume) return;
-
-    const blob = new Blob([generatedResume], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `ATS_Resume_${selectedJob?.company || "Job"}_${new Date().toISOString().split("T")[0]}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    showToast("success", "Resume downloaded successfully!");
-  };
-
-  // Submit application
-  const handleSubmitApplication = () => {
-    showToast("success", `Application submitted for ${selectedJob?.title} at ${selectedJob?.company}!`);
-    setShowReviewModal(false);
-    setSwipeMode(false);
-    setShowCompanyDeepDive(true);
   };
 
   // Handle sending referral request
@@ -865,15 +740,6 @@ Bachelor's Degree in Computer Science
       default:
         break;
     }
-  };
-
-  // Search handler
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    const filteredResults = jobs.filter((job) =>
-      job.company.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setSearchResults(filteredResults);
   };
 
   const renderResume = () => (

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Camera, Edit2, ChevronDown, ChevronUp } from "lucide-react";
+import { Camera, ChevronDown, ChevronUp } from "lucide-react";
 
 const styles = {
   container: {

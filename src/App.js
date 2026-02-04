@@ -20,7 +20,6 @@ import Profile from "./Profile";
 import EducationPG1 from "./EducationPG1";
 import Sidebar from "./EducationPG1";
 import FHackathon from "./famoushack";
-import FHHackathon from "./foresthack";
 import JobListing from "./Japple";
 
 export function Connect() {
@@ -385,7 +384,7 @@ export function Connect() {
   };
 
   return (
-    <Router>
+    <Router basename="/Educatee">
       <Routes>
         <Route path="/" element={<MainContent />} />
         <Route path="/project-tracker" element={<ProjectTracker />} />
