@@ -252,7 +252,9 @@ const PhysicsCardGame = () => {
         setPlayer2Score((prev) => prev + 1);
       }
     }
-  }, [player1Answer, player2Answer]);
+    // Dependencies are intentionally limited to avoid infinite loops when updating scores
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player1Answer, player2Answer, currentQuestionIndex, showAnswer]);
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < physicsQuestions.length - 1) {

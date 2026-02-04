@@ -151,9 +151,10 @@ const PhysicsClassroom = () => {
   };
 
   useEffect(() => {
+    let stream = null;
     const startVideo = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
         setLocalStream(stream);
@@ -164,8 +165,8 @@ const PhysicsClassroom = () => {
     startVideo();
 
     return () => {
-      if (localStream) {
-        localStream.getTracks().forEach((track) => track.stop());
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);

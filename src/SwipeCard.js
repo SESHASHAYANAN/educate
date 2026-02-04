@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './SwipeCard.css';
 
 // Card theme colors - different for each job
@@ -17,10 +17,16 @@ const CARD_THEMES = [
 const SwipeCard = ({ job, onSwipe, isTop, style, cardIndex = 0 }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
-    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [, setStartPos] = useState({ x: 0, y: 0 });
     const [swipeDirection, setSwipeDirection] = useState(null);
     const [animateClass, setAnimateClass] = useState('');
     const cardRef = useRef(null);
+    const positionRef = useRef(position);
+
+    // Keep ref in sync with state for event handlers
+    useEffect(() => {
+        positionRef.current = position;
+    }, [position]);
 
     // Get theme based on job id or index
     const theme = CARD_THEMES[(job.id || cardIndex) % CARD_THEMES.length];
@@ -33,34 +39,38 @@ const SwipeCard = ({ job, onSwipe, isTop, style, cardIndex = 0 }) => {
         setStartPos({ x: clientX, y: clientY });
     };
 
-    const handleMove = (clientX, clientY) => {
-        if (!isDragging || !isTop) return;
+    const handleMove = useCallback((clientX, clientY) => {
+        if (!isTop) return;
 
-        const deltaX = clientX - startPos.x;
-        const deltaY = clientY - startPos.y;
+        setStartPos(prevStartPos => {
+            const deltaX = clientX - prevStartPos.x;
+            const deltaY = clientY - prevStartPos.y;
 
-        setPosition({ x: deltaX, y: deltaY });
+            setPosition({ x: deltaX, y: deltaY });
 
-        if (deltaX > 60) {
-            setSwipeDirection('right');
-        } else if (deltaX < -60) {
-            setSwipeDirection('left');
-        } else {
-            setSwipeDirection(null);
-        }
-    };
+            if (deltaX > 60) {
+                setSwipeDirection('right');
+            } else if (deltaX < -60) {
+                setSwipeDirection('left');
+            } else {
+                setSwipeDirection(null);
+            }
+            return prevStartPos;
+        });
+    }, [isTop]);
 
-    const handleEnd = () => {
-        if (!isDragging || !isTop) return;
+    const handleEnd = useCallback(() => {
+        if (!isTop) return;
         setIsDragging(false);
 
-        if (position.x > SWIPE_THRESHOLD) {
+        const currentPosition = positionRef.current;
+        if (currentPosition.x > SWIPE_THRESHOLD) {
             // Animate then trigger swipe
             setAnimateClass('selecting');
             setTimeout(() => {
                 onSwipe('right', job);
             }, 400);
-        } else if (position.x < -SWIPE_THRESHOLD) {
+        } else if (currentPosition.x < -SWIPE_THRESHOLD) {
             setAnimateClass('rejecting');
             setTimeout(() => {
                 onSwipe('left', job);
@@ -70,17 +80,17 @@ const SwipeCard = ({ job, onSwipe, isTop, style, cardIndex = 0 }) => {
             setPosition({ x: 0, y: 0 });
             setSwipeDirection(null);
         }
-    };
+    }, [isTop, job, onSwipe]);
 
     // Mouse events
     const handleMouseDown = (e) => handleStart(e.clientX, e.clientY);
-    const handleMouseMove = (e) => handleMove(e.clientX, e.clientY);
-    const handleMouseUp = () => handleEnd();
+    const handleMouseMove = useCallback((e) => handleMove(e.clientX, e.clientY), [handleMove]);
+    const handleMouseUp = useCallback(() => handleEnd(), [handleEnd]);
 
     // Touch events
     const handleTouchStart = (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY);
-    const handleTouchMove = (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY);
-    const handleTouchEnd = () => handleEnd();
+    const handleTouchMove = useCallback((e) => handleMove(e.touches[0].clientX, e.touches[0].clientY), [handleMove]);
+    const handleTouchEnd = useCallback(() => handleEnd(), [handleEnd]);
 
     useEffect(() => {
         if (isDragging) {
@@ -96,7 +106,8 @@ const SwipeCard = ({ job, onSwipe, isTop, style, cardIndex = 0 }) => {
             document.removeEventListener('touchmove', handleTouchMove);
             document.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [isDragging, position]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
     const cardStyle = {
         ...style,

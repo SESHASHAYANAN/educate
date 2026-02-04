@@ -43,8 +43,9 @@ const EducationPlatform = ({ onNavigate }) => {
 
   // Animation Storyline Mode States
   const [videoMode, setVideoMode] = useState("animation"); // "recap" | "animation" | "pro"
-  const [animationScript, setAnimationScript] = useState(null);
-  const [characterDesigns,] = useState([]);
+  const [, setAnimationScript] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [characterDesigns] = useState([]);
   const [currentScene, setCurrentScene] = useState(0);
   const [totalScenes, setTotalScenes] = useState(0);
   const [targetGrade, setTargetGrade] = useState("10");
@@ -56,7 +57,7 @@ const EducationPlatform = ({ onNavigate }) => {
   const [languageSearch, setLanguageSearch] = useState("");
   const [showProLanguages, setShowProLanguages] = useState(false);
   const [videoPhase, setVideoPhase] = useState("idle"); // "idle" | "script" | "video" | "voice" | "sync" | "complete"
-  const [sceneTimings, setSceneTimings] = useState([]);
+  const [, setSceneTimings] = useState([]);
 
   // Text Overlay Mode options for Pro Mode
   const textOverlayModes = [
@@ -85,7 +86,7 @@ const EducationPlatform = ({ onNavigate }) => {
   // New Feature States - Notes Upload
   const [uploadedNotesImage, setUploadedNotesImage] = useState(null);
   const [notesAnalysis, setNotesAnalysis] = useState(null);
-  const [notesAnalyzing, setNotesAnalyzing] = useState(false);
+  const [notesAnalyzing] = useState(false);
 
   // New Feature States - Accessibility
   const [accessibilitySolution, setAccessibilitySolution] = useState(null);
@@ -113,8 +114,11 @@ const EducationPlatform = ({ onNavigate }) => {
 
   // Track Wan 2.5 credit usage
   const [wan25CreditsUsed, setWan25CreditsUsed] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [wan25VideoUrl, setWan25VideoUrl] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [wan25Loading, setWan25Loading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [wan25Status, setWan25Status] = useState("");
 
   // ==================== xAI Grok API Configuration ====================
@@ -143,6 +147,7 @@ const EducationPlatform = ({ onNavigate }) => {
   });
 
   // ==================== Audio-First Pipeline State ====================
+  // eslint-disable-next-line no-unused-vars
   const [audioData, setAudioData] = useState({
     blob: null,
     segmentTimings: [],
@@ -155,9 +160,11 @@ const EducationPlatform = ({ onNavigate }) => {
     preview: { width: 854, height: 480, fps: 12, quality: 'fast', bitrate: 1500000 },
     final: { width: 1280, height: 720, fps: 24, quality: 'high', bitrate: 5000000 }
   };
-  const [renderMode,] = useState('preview');
+  // eslint-disable-next-line no-unused-vars
+  const [renderMode] = useState('preview');
 
   // ==================== Asset Cache System ====================
+  // eslint-disable-next-line no-unused-vars
   const AssetCache = {
     backgrounds: new Map(),
     characters: new Map(),
@@ -454,7 +461,7 @@ const EducationPlatform = ({ onNavigate }) => {
   ];
 
   // Text overlay modes - defined above at line 62
-
+  // eslint-disable-next-line no-unused-vars
   const sampleUsers = [
     "PhysicsNinja",
     "QuantumExplorer",
@@ -519,7 +526,7 @@ const EducationPlatform = ({ onNavigate }) => {
         timestamp: new Date(Date.now() - 10800000).toISOString(),
       },
     ];
-
+    // eslint-disable-next-line no-unused-vars
     const languages = [
       {
         code: "en-US",
@@ -1517,7 +1524,7 @@ Separate examples and practice exercises into distinct sections.`;
       setIsLoading(false);
     }
   };
-
+  // eslint-disable-next-line no-unused-vars
   const handleAddComment = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
@@ -1525,7 +1532,7 @@ Separate examples and practice exercises into distinct sections.`;
       setNewComment("");
     }
   };
-
+  // eslint-disable-next-line no-unused-vars
   const disabilityOptionsStyle = {
     backgroundColor: "white",
     padding: "15px",
@@ -1533,7 +1540,7 @@ Separate examples and practice exercises into distinct sections.`;
     marginTop: "10px",
     border: "1px solid #ddd",
   };
-
+  // eslint-disable-next-line no-unused-vars
   const disabilityButtonStyle = {
     padding: "8px 15px",
     margin: "5px",
@@ -1691,7 +1698,7 @@ Separate examples and practice exercises into distinct sections.`;
 
   Thank you for joining me on this educational journey through ${topic}. May this knowledge inspire you to pursue further understanding and contribute to the ongoing advancement of this important field. Continue to question, explore, and discover, for that is the path to true mastery and innovation.`;
   };
-
+  // eslint-disable-next-line no-unused-vars
   const translateText = async (text, targetLang) => {
     if (targetLang === "en") return text;
 
@@ -1997,6 +2004,7 @@ Requirements:
 
   // ==================== MEDIA STREAM VALIDATION ====================
   // Validate that output has both audio and video tracks
+  // eslint-disable-next-line no-unused-vars
   const validateMediaStreams = async (videoElement) => {
     return new Promise((resolve) => {
       const result = {
@@ -2037,6 +2045,7 @@ Requirements:
 
   // ==================== SMOOTH TRANSITIONS ====================
   // Apply smooth transitions between scenes
+  // eslint-disable-next-line no-unused-vars
   const applyTransition = (ctx, transitionType, progress, canvasWidth, canvasHeight) => {
     const easing = VIDEO_THEME.easing.easeInOutCubic;
     const easedProgress = easing(progress);
@@ -2069,6 +2078,7 @@ Requirements:
   };
 
   // Reset transition effects
+  // eslint-disable-next-line no-unused-vars
   const resetTransition = (ctx) => {
     ctx.globalAlpha = 1;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -2103,7 +2113,7 @@ Requirements:
       framesRendered: 0
     }));
   };
-
+  // eslint-disable-next-line no-unused-vars
   const updateRenderProgress = (framesRendered, totalFrames) => {
     const now = performance.now();
     const elapsed = now - (renderMetrics.renderStartTime || now);
@@ -2117,7 +2127,7 @@ Requirements:
       estimatedRemaining: Math.round(estimatedRemainingMs / 1000)
     }));
   };
-
+  // eslint-disable-next-line no-unused-vars
   const recordTimeToPreview = () => {
     const elapsed = performance.now() - (renderMetrics.renderStartTime || performance.now());
     setRenderMetrics(prev => ({
@@ -2559,6 +2569,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
       const ctx = canvas.getContext("2d");
 
       // Character color palette
+      // eslint-disable-next-line no-unused-vars
       const characterColors = {
         main: scriptData.mainCharacter?.color || "#667eea",
         bg: "#1a1a2e"
@@ -2791,7 +2802,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
         const R = Math.min(255, (num >> 16) + amt);
         const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
         const B = Math.min(255, (num & 0x0000FF) + amt);
-        return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)}`;
+        return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)}`;
       };
 
       const darkenColor = (color, percent) => {
@@ -2800,7 +2811,7 @@ Make it 80% funny, 20% educational. Every joke should teach something. Include 1
         const R = Math.max(0, (num >> 16) - amt);
         const G = Math.max(0, ((num >> 8) & 0x00FF) - amt);
         const B = Math.max(0, (num & 0x0000FF) - amt);
-        return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)}`;
+        return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)}`;
       };
 
       // Speech bubble drawing
@@ -4365,7 +4376,7 @@ Return ONLY valid JSON.`;
         const R = Math.min(255, (num >> 16) + amt);
         const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
         const B = Math.min(255, (num & 0x0000FF) + amt);
-        return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)} `;
+        return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)} `;
       };
 
       const darkenColor = (color, percent) => {
@@ -4374,7 +4385,7 @@ Return ONLY valid JSON.`;
         const R = Math.max(0, (num >> 16) - amt);
         const G = Math.max(0, ((num >> 8) & 0x00FF) - amt);
         const B = Math.max(0, (num & 0x0000FF) - amt);
-        return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)} `;
+        return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)} `;
       };
 
       const drawProSpeechBubble = (ctx, x, y, text, emotion, characterName) => {
@@ -4864,7 +4875,7 @@ Return ONLY valid JSON.`;
       // BUILD AUDIO CUE QUEUE - DO NOT PLAY AUDIO YET
       // This queue will be processed during video playback for perfect sync
       const audioCueQueue = [];
-      let voiceProgress = 10;
+      // voiceProgress tracking is done inline in the loop below
       const totalDialogues = finalTimings.reduce((sum, t) => sum + (t.dialogues?.length || 0), 0);
       let dialogueCount = 0;
 
@@ -4888,8 +4899,8 @@ Return ONLY valid JSON.`;
           });
 
           dialogueCount++;
-          voiceProgress = 10 + Math.round((dialogueCount / totalDialogues) * 85);
-          setProProgress(prev => ({ ...prev, voice: voiceProgress }));
+          const currentVoiceProgress = 10 + Math.round((dialogueCount / totalDialogues) * 85);
+          setProProgress(prev => ({ ...prev, voice: currentVoiceProgress }));
           setVideoStatus(`🎤 PHASE 3/4: Preparing voice ${dialogueCount}/${totalDialogues} - ${dialogue.character} (${dialogue.emotion})`);
         }
       }
@@ -5209,6 +5220,7 @@ Return ONLY valid JSON.`;
       calculateTestScore();
     }
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testStarted, testTimer]);
 
   // ==================== NEW FEATURE 3: NOTES UPLOAD & ANALYSIS ====================
