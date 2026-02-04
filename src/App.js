@@ -384,7 +384,7 @@ export function Connect() {
   };
 
   return (
-    <Router basename="/Educatee">
+    <Router basename="/educate">
       <Routes>
         <Route path="/" element={<MainContent />} />
         <Route path="/project-tracker" element={<ProjectTracker />} />
